@@ -606,7 +606,14 @@ footer .lockup{justify-content:center;}
             <label class="opt-chip"><input type="checkbox" name="Primary Role" value="Drone Pilot"><span class="box"></span>Drone Pilot</label>
             <label class="opt-chip"><input type="checkbox" name="Primary Role" value="Motion Graphics"><span class="box"></span>Motion Graphics</label>
             <label class="opt-chip"><input type="checkbox" name="Primary Role" value="Graphic Designer"><span class="box"></span>Graphic Designer</label>
-            <label class="opt-chip"><input type="checkbox" name="Primary Role" value="Other"><span class="box"></span>Other</label>
+            <label class="opt-chip"><input type="checkbox" name="Primary Role" value="Other" data-other="primaryRoleOther"><span class="box"></span>Other</label>
+          </div>
+          <!-- Reveals when "Other" is checked -->
+          <div class="conditional" id="primaryRoleOther">
+            <div class="field full">
+              <label for="primaryRoleOtherInput">Please specify your other role(s)</label>
+              <input type="text" id="primaryRoleOtherInput" name="Primary Role (Other)" placeholder="Tell us what you do" disabled>
+            </div>
           </div>
         </div>
 
@@ -669,7 +676,14 @@ footer .lockup{justify-content:center;}
               <label class="opt-chip"><input type="checkbox" name="Passionate About" value="Events"><span class="box"></span>Events</label>
               <label class="opt-chip"><input type="checkbox" name="Passionate About" value="Documentary"><span class="box"></span>Documentary</label>
               <label class="opt-chip"><input type="checkbox" name="Passionate About" value="Product Content"><span class="box"></span>Product Content</label>
-              <label class="opt-chip"><input type="checkbox" name="Passionate About" value="Other"><span class="box"></span>Other</label>
+              <label class="opt-chip"><input type="checkbox" name="Passionate About" value="Other" data-other="passionateOther"><span class="box"></span>Other</label>
+            </div>
+            <!-- Reveals when "Other" is checked -->
+            <div class="conditional" id="passionateOther">
+              <div class="field full">
+                <label for="passionateOtherInput">Please specify</label>
+                <input type="text" id="passionateOtherInput" name="Passionate About (Other)" placeholder="What else are you passionate about?" disabled>
+              </div>
             </div>
           </div>
         </div>
@@ -723,7 +737,14 @@ footer .lockup{justify-content:center;}
             <label class="opt-chip"><input type="checkbox" name="Software" value="Photoshop"><span class="box"></span>Photoshop</label>
             <label class="opt-chip"><input type="checkbox" name="Software" value="Lightroom"><span class="box"></span>Lightroom</label>
             <label class="opt-chip"><input type="checkbox" name="Software" value="Final Cut Pro"><span class="box"></span>Final Cut Pro</label>
-            <label class="opt-chip"><input type="checkbox" name="Software" value="Other"><span class="box"></span>Other</label>
+            <label class="opt-chip"><input type="checkbox" name="Software" value="Other" data-other="softwareOther"><span class="box"></span>Other</label>
+          </div>
+          <!-- Reveals when "Other" is checked -->
+          <div class="conditional" id="softwareOther">
+            <div class="field full">
+              <label for="softwareOtherInput">Please specify your other software</label>
+              <input type="text" id="softwareOtherInput" name="Software (Other)" placeholder="e.g. Capture One, CapCut, Blender" disabled>
+            </div>
           </div>
         </div>
 
@@ -780,7 +801,14 @@ footer .lockup{justify-content:center;}
               <label class="opt-chip"><input type="checkbox" name="Improving Skills" value="Audio"><span class="box"></span>Audio</label>
               <label class="opt-chip"><input type="checkbox" name="Improving Skills" value="Directing"><span class="box"></span>Directing</label>
               <label class="opt-chip"><input type="checkbox" name="Improving Skills" value="Client Communication"><span class="box"></span>Client Communication</label>
-              <label class="opt-chip"><input type="checkbox" name="Improving Skills" value="Other"><span class="box"></span>Other</label>
+              <label class="opt-chip"><input type="checkbox" name="Improving Skills" value="Other" data-other="improvingOther"><span class="box"></span>Other</label>
+            </div>
+            <!-- Reveals when "Other" is checked -->
+            <div class="conditional" id="improvingOther">
+              <div class="field full">
+                <label for="improvingOtherInput">Please specify</label>
+                <input type="text" id="improvingOtherInput" name="Improving Skills (Other)" placeholder="What else are you working on?" disabled>
+              </div>
             </div>
           </div>
           <div class="q-block">
@@ -986,6 +1014,24 @@ footer .lockup{justify-content:center;}
     radio.addEventListener('change',function(){
       var show=(radio.getAttribute('data-student')==='yes' && radio.checked);
       schoolBox.classList.toggle('show', show);
+    });
+  });
+
+  /* "Other" reveals — any option with data-other="<id>" toggles a
+     "Please specify" text input. The input stays disabled (so it never
+     posts) until Other is checked, and is cleared/re-disabled when unchecked. */
+  form.querySelectorAll('[data-other]').forEach(function(ctrl){
+    var box=document.getElementById(ctrl.getAttribute('data-other'));
+    if(!box) return;
+    var input=box.querySelector('input,textarea');
+    ctrl.addEventListener('change',function(){
+      var show=ctrl.checked;
+      box.classList.toggle('show', show);
+      if(input){
+        input.disabled=!show;              // disabled inputs are not submitted
+        if(show){ input.focus(); }
+        else { input.value=''; }
+      }
     });
   });
 
